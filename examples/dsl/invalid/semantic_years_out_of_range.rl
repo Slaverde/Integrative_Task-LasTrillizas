@@ -1,0 +1,2 @@
+// SEMANTIC S4: years must be between 0 and 60
+candidate "Ana" { experience { years: 99 } skills { GIT } results { FULL_STACK_DEVELOPER: REJECTED MACHINE_LEARNING_ENGINEER: REJECTED BACKEND_DEVELOPER: REJECTED DATA_SCIENTIST: REJECTED } }

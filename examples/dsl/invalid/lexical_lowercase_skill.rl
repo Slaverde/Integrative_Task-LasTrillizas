@@ -1,0 +1,2 @@
+// LEXICAL: a skill must be an upper-case token
+candidate "Ana" { skills { git } results { FULL_STACK_DEVELOPER: REJECTED MACHINE_LEARNING_ENGINEER: REJECTED BACKEND_DEVELOPER: REJECTED DATA_SCIENTIST: REJECTED } }
