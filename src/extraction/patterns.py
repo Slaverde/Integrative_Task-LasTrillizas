@@ -75,3 +75,75 @@ INSTITUTION = re.compile(
     rf"(?:[ \t]+of(?:[ \t]+{_CAP})+)?"
     rf"|\b(?:University|Institute|College)[ \t]+of(?:[ \t]+{_CAP})+"
 )
+
+# --- Technical skills -------------------------------------------------------
+# These patterns recognize every spelling variant of a technology exactly as
+# the candidate wrote it ("JS", "React.js", "Postgres"). Deciding that two
+# spellings are the same technology is the job of stage 2.
+
+
+def _skill_pattern(alternatives: list[str]) -> re.Pattern[str]:
+    """Case-insensitive match of one alternative that is not part of a bigger
+    word. Longer or more specific alternatives must come first."""
+    body = "|".join(alternatives)
+    return re.compile(rf"(?<![\w.+#])(?:{body})(?!\w)", re.I)
+
+
+LANGUAGE = _skill_pattern(
+    [
+        r"java[ ]?script",
+        r"ecmascript",
+        r"type[ ]?script",
+        r"js",
+        r"ts",
+        r"python3?",
+        r"java",
+        r"kotlin",
+        r"c\+\+",
+        r"c#",
+        r"php",
+        r"golang",
+        r"(?-i:Swift|Rust|Ruby|Scala)",
+    ]
+)
+
+FRAMEWORK = _skill_pattern(
+    [
+        r"react(?:[ .-]?js)?",
+        r"angular(?:[ .-]?js)?",
+        r"vue(?:[ .-]?js)?",
+        r"next[ .-]?js",
+        r"node[ .-]?js",
+        r"express[ .-]?js",
+        r"django",
+        r"flask",
+        r"fast[ ]?api",
+        r"spring[ -]?boot",
+        r"pandas",
+        r"num[ ]?py",
+        r"sci[ -]?py",
+        r"scikit[ -]?learn",
+        r"sklearn",
+        r"tensor[ ]?flow",
+        r"py[ ]?torch",
+        r"keras",
+        r"matplotlib",
+    ]
+)
+
+DATABASE = _skill_pattern(
+    [
+        r"postgre[ ]?sql",
+        r"postgres",
+        r"my[ ]?sql",
+        r"maria[ ]?db",
+        r"mongo[ ]?db",
+        r"mongo",
+        r"sql[ ]?server",
+        r"sqlite",
+        r"no[ -]?sql",
+        r"redis",
+        r"firebase",
+        r"sql",
+    ]
+)
