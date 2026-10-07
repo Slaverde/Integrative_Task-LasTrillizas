@@ -46,3 +46,21 @@ def extract_languages(text: str) -> list[str]:
 def extract_databases(text: str) -> list[str]:
     """Database technologies as written (``Postgres``, ``Mongo DB``)."""
     return _unique_ignoring_case(m.group(0) for m in _matches(patterns.DATABASE, text))
+
+
+def extract_tools(text: str) -> list[str]:
+    """Tools and platforms as written (``Git``, ``GitHub``, ``Docker``).
+
+    A match inside a link or an e-mail (the ``github`` of ``github.com/ana``)
+    is contact data, not a skill, so it is discarded.
+    """
+    contact = _matches(patterns.LINK, text) + _matches(patterns.EMAIL, text)
+    found = (
+        m.group(0) for m in _matches(patterns.TOOL, text) if not _inside(m, contact)
+    )
+    return _unique_ignoring_case(found)
+
+
+def extract_concepts(text: str) -> list[str]:
+    """Other qualifications as written (``REST APIs``, ``machine learning``)."""
+    return _unique_ignoring_case(m.group(0) for m in _matches(patterns.CONCEPT, text))

@@ -147,3 +147,86 @@ DATABASE = _skill_pattern(
         r"sql",
     ]
 )
+
+TOOL = _skill_pattern(
+    [
+        r"git[ ]?hub",
+        r"git[ ]?lab",
+        r"bit[ ]?bucket",
+        r"git",
+        r"docker",
+        r"kubernetes",
+        r"k8s",
+        r"jenkins",
+        r"jira",
+        r"jupyter(?:[ ]?(?:notebooks?|lab))?",
+        r"postman",
+        r"linux",
+        r"aws",
+        r"azure",
+        r"gcp",
+        r"npm",
+        r"webpack",
+        r"maven",
+        r"gradle",
+        r"ci/cd",
+    ]
+)
+
+# Other qualifications that profiles ask for and that are not a tool or a
+# library: practices and areas of knowledge.
+CONCEPT = _skill_pattern(
+    [
+        r"rest(?:ful)?[ -]?apis?",
+        r"restful(?:[ ]web)?[ ]services?",
+        r"restful",
+        r"graphql",
+        r"microservices?",
+        r"machine[ -]learning(?:[ ]models?)?(?:[ ]development)?",
+        r"deep[ -]learning",
+        r"predictive[ ]model(?:s|ing)?",
+        r"data[ -]processing(?:[ ]pipelines?)?",
+        r"(?-i:ML)",
+    ]
+)
+
+# --- Professional experience ------------------------------------------------
+
+_NUMBER_WORDS = r"one|two|three|four|five|six|seven|eight|nine|ten"
+
+# "3 years of experience", "2+ years of professional experience",
+# "five años de experiencia". Group 1 is the number as written.
+EXPERIENCE_YEARS = re.compile(
+    rf"(?<![\w.])(\d{{1,2}}(?:[.,]\d)?|{_NUMBER_WORDS})\+?[ \t]*"
+    r"(?:years?|yrs?|años?)[ \t]+"
+    r"(?:(?:of|de)[ \t]+)?"
+    r"(?:(?:professional|work|relevant|industry|hands-on|profesional)[ \t]+)?"
+    r"(?:experience|experiencia)(?!\w)",
+    re.I,
+)
+
+# The sentence that follows the years of experience, up to a period, a
+# semicolon or the end of the line: "3 years of experience developing web
+# applications".
+EXPERIENCE_STATEMENT = re.compile(
+    EXPERIENCE_YEARS.pattern
+    + r"(?:[ \t]+(?:in|with|developing|building|using|as|working[ \t]+(?:in|with|on)"
+    r"|en|con|desarrollando)[ \t]+[^.\n;]+)?",
+    re.I,
+)
+
+_DATE_RANGE = (
+    r"(?:19|20)\d{2}[ \t]*[-–—][ \t]*"
+    r"(?:(?:19|20)\d{2}|(?i:present|current|presente|actualidad|actual))"
+)
+
+# A job: optional capitalized words + a role word, optionally "at Company"
+# and a date range. "Senior Backend Developer at Acme Corp (2020 - 2023)".
+JOB = re.compile(
+    rf"\b(?:{_CAP}[ \t]+){{0,3}}"
+    r"(?:Developer|Engineer|Analyst|Intern|Manager|Consultant|Architect|Scientist"
+    r"|Administrator|Designer|Desarrolladora?|Analista|Practicante|Pasante"
+    r"|Consultor|Arquitecto|Cient[ií]fico)\b"
+    rf"(?:[ \t]+(?:at|en|@)[ \t]+{_CAP}(?:[ \t]+{_CAP}){{0,3}})?"
+    rf"(?:[ \t]*[,(|–—-]*[ \t]*{_DATE_RANGE}\)?)?"
+)
