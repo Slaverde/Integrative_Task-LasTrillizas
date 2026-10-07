@@ -16,7 +16,7 @@ Team: **Las Trillizas** (E35)
 | Mauricio Marin | Literature review, profiles, stage 3 (finite automata) |
 | Alejandro Arango | Stage 2 (transducers), sorting, pipeline, UI and integration tests |
 
-IDE used: TODO
+IDEs used: Visual Studio Code and IntelliJ IDEA
 
 ## Pipeline
 
@@ -52,4 +52,5 @@ python -m pytest
 
 - [Requirements and traceability](docs/requirements.md)
 - [Module contracts](docs/contracts.md)
+- [Stage 1: regular expressions](docs/extraction-regex.md)
 - [Example resumes](examples/README.md)
