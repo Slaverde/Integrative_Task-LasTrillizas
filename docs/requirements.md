@@ -11,7 +11,7 @@ Deadline: **October 11, 2026**.
 | R2 | Normalize variants to a canonical form (e.g. `JS`, `Javascript` -> `JAVASCRIPT`) using our own transformations; give the 7-tuple, the diagram and the implementation of each transducer | Finite-state transducers | `pyformlang` | `src/normalization` | transducer definitions (commit 25) |
 | R3 | Sort normalized qualifications by profile order so the result does not depend on the resume order | - | - | `src/normalization` | profile orders (commit 26) |
 | R4 | One automaton per profile; give the 5-tuple, the diagram, the pattern it represents and why it is a DFA, NFA or ε-NFA | Finite automata | `pyformlang` | `src/classification` | automata definitions (commits 17-18) |
-| R5 | Define a DSL for the candidate profile in EBNF (terminals and non-terminals), validate it, reject invalid input and generate an HTML or Markdown visualization | Context-free grammar | `textX` | `src/dsl` | grammar (commit 7) |
+| R5 | Define a DSL for the candidate profile in EBNF (terminals and non-terminals), validate it, reject invalid input and generate an HTML or Markdown visualization | Context-free grammar | `textX` | `src/dsl` | [dsl-grammar.md](dsl-grammar.md) |
 | R6 | The four profiles go through the same code, not separate implementations | - | - | `src/main.py` | `docs/contracts.md` |
 
 Profiles: Full Stack Developer and Machine Learning Engineer (given), plus one

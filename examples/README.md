@@ -21,3 +21,17 @@ Para ver la etapa 1 sobre una hoja de vida:
 ```bash
 python -c "from src.extraction import extract; print(extract(open('examples/resumes/wednesday_addams.txt', encoding='utf-8').read()))"
 ```
+
+## Sentencias del DSL
+
+En `dsl/` están las sentencias del lenguaje de perfil del candidato (etapa 4,
+ver [docs/dsl-grammar.md](../docs/dsl-grammar.md)).
+
+| Carpeta | Contenido |
+|---|---|
+| `dsl/valid/` | Cuatro sentencias válidas, desde la más pequeña (`sofia_nunez.rl`) hasta la que usa todas las secciones (`laura_gomez.rl`) |
+| `dsl/invalid/` | 17 sentencias inválidas. El prefijo del nombre dice el tipo de error: `lexical_`, `syntax_` o `semantic_`. La primera línea de cada archivo explica por qué se rechaza |
+
+Los errores léxicos y sintácticos los rechaza la gramática. Los semánticos
+(`semantic_`) son sintácticamente correctos y los rechaza la validación
+posterior.

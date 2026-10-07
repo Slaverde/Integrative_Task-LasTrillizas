@@ -48,7 +48,7 @@ Etapa 4:        perfil validado y HTML del candidato
 | 1. Extracción | Lista, con pruebas y documentación |
 | 2. Normalización | Pendiente |
 | 3. Reconocimiento | Pendiente |
-| 4. DSL y HTML | Pendiente |
+| 4. DSL y HTML | Gramática EBNF definida, falta implementarla en textX |
 
 Los perfiles `BACKEND_DEVELOPER` y `DATA_SCIENTIST` son provisionales hasta que el profesor confirme los requisitos de los dos perfiles propios.
 
@@ -82,4 +82,5 @@ python -c "from src.extraction import extract; print(extract(open('examples/resu
 - [Contratos entre módulos](docs/contracts.md): entradas y salidas de cada función.
 - [Etapa 1, expresiones regulares](docs/extraction-regex.md): cada patrón, qué reconoce y sus límites.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
-- [Hojas de vida de ejemplo](examples/README.md).
+- [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
+- [Hojas de vida y sentencias de ejemplo](examples/README.md).
