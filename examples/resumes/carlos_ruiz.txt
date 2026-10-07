@@ -1,0 +1,16 @@
+Carlos Ruiz
+carlos.ruiz@example.com | +1 (415) 555-2671 | https://github.com/cruiz.
+
+SUMMARY
+Backend engineer with 6+ years of professional experience building microservices
+and RESTful APIs.
+
+EXPERIENCE
+Senior Backend Developer at Acme Corp (2019 - Present)
+  * Designed REST APIs with Spring Boot and Java; deployed with Docker and Kubernetes.
+  * Tuned MySQL and Redis; CI/CD with Jenkins.
+
+EDUCATION
+B.Sc. in Computer Science, University of Michigan
+
+SKILLS: JAVA, SPRING-BOOT, MYSQL, GIT

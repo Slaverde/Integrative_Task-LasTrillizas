@@ -1,0 +1,9 @@
+Ana María Torres
+ana.torres@mail.example.org
+300-123-4567
+
+I am a full stack developer. 3 years of experience in web development.
+Stack: Javascript, TypeScript, ReactJS, Node js, PostgreSQL, Mongo DB.
+Tools: Git, GitHub, Postman. Also familiar with REST API design and GraphQL.
+
+Education: Tecnólogo en Desarrollo de Software, Instituto Tecnológico de Cali
