@@ -9,9 +9,9 @@ candidate satisfies a profile (stage 3). Results are stored in the
 `ExtractionResult` data class (`src/contracts.py`), keeping the order of
 appearance and removing duplicates.
 
-This document covers contact information and academic qualifications.
-Skills (languages, frameworks, databases, tools) and experience are added in
-later commits.
+This document covers contact information, academic qualifications and
+technical skills (languages, frameworks/libraries and databases). Tools and
+experience are added in a later commit.
 
 Notation: `[ \t]` is used instead of `\s` so a match never crosses a line
 break; `\w` is a letter, digit or underscore.
@@ -146,6 +146,84 @@ with `CAP = [A-ZÁÉÍÓÚÑ][\w'’-]*`. Case-sensitive.
 - Rejects: the line break after an institution (`Universidad Icesi\nPython`
   gives only `Universidad Icesi`)
 
+## 7. Skills: common structure
+
+The three skill patterns are built by the same function (`_skill_pattern` in
+`patterns.py`):
+
+```
+(?<![\w.+#])(?:ALT1|ALT2|...)(?!\w)        (case-insensitive)
+```
+
+| Part | Recognizes |
+|---|---|
+| `(?<![\w.+#])` | The match cannot start in the middle of a word, after a dot, or after `+` / `#` (so `JS` is not found inside `Node.js`, nor `SQL` inside `MySQL`) |
+| `(?:ALT1\|ALT2\|...)` | One spelling variant of a technology. Longer alternatives come first, so `SQL Server` is read before `SQL` and `Java Script` before `Java` |
+| `(?!\w)` | The match cannot end in the middle of a longer word (`Java` is not found inside `JavaScript`) |
+
+Stage 1 keeps each match **exactly as written** (`React.js`, `Postgres`); it
+does not say that `ReactJS` and `React.js` are the same technology, that is
+stage 2. Duplicates are removed ignoring case (`JS` and `js`), keeping the
+first spelling.
+
+## 8. Programming languages
+
+Alternatives (each one is a regular expression; `[ ]?` is an optional space):
+
+| Alternative | Spellings recognized |
+|---|---|
+| `java[ ]?script` | `JavaScript`, `Javascript`, `Java Script` |
+| `ecmascript` | `ECMAScript` |
+| `type[ ]?script` | `TypeScript`, `Type Script` |
+| `js`, `ts` | `JS`, `TS` (any case) |
+| `python3?` | `Python`, `Python3` |
+| `java`, `kotlin`, `php`, `golang` | the language names |
+| `c\+\+`, `c#` | `C++`, `C#` |
+| `(?-i:Swift\|Rust\|Ruby\|Scala)` | only with a capital first letter, because `swift` or `rust` are ordinary English words |
+
+Language: the set of spellings above, each as a whole word.
+A match that lies inside a framework match (the `JS` of `Node JS`) is
+discarded by `extract_languages`, so it is not reported as a language.
+
+- Accepts: `JS`, `Javascript`, `Java Script`, `Python3`, `C++`
+- Rejects: the `Java` inside `JavaScript`, the `JS` inside `React.js`
+
+## 9. Frameworks and libraries
+
+| Alternative | Spellings recognized |
+|---|---|
+| `react(?:[ .-]?js)?` | `React`, `React.js`, `ReactJS`, `React JS` |
+| `angular(?:[ .-]?js)?`, `vue(?:[ .-]?js)?` | `Angular`, `AngularJS`, `Vue`, `Vue.js` |
+| `next[ .-]?js`, `node[ .-]?js`, `express[ .-]?js` | `Next.js`, `NodeJS`, `Node.js`, `Node JS`, `ExpressJS` (the `js` is required, so a plain "node" is not matched) |
+| `django`, `flask`, `fast[ ]?api` | `Django`, `Flask`, `FastAPI`, `Fast API` |
+| `spring[ -]?boot` | `Spring Boot`, `SpringBoot`, `Spring-Boot` (plain "Spring" is not matched) |
+| `pandas`, `num[ ]?py`, `sci[ -]?py` | `pandas`, `NumPy`, `Num Py`, `SciPy` |
+| `scikit[ -]?learn`, `sklearn` | `Scikit-learn`, `scikit learn`, `scikit-learn`, `sklearn` |
+| `tensor[ ]?flow`, `py[ ]?torch`, `keras` | `TensorFlow`, `Tensor Flow`, `PyTorch`, `Py Torch`, `Keras` |
+| `matplotlib` | `Matplotlib` |
+
+- Accepts: `React.js`, `NodeJS`, `scikit learn`, `Tensor Flow`
+- Rejects: `a tree node` (no `js`), `Spring 2023`
+
+## 10. Databases
+
+| Alternative | Spellings recognized |
+|---|---|
+| `postgre[ ]?sql`, `postgres` | `PostgreSQL`, `Postgre SQL`, `Postgres` |
+| `my[ ]?sql`, `maria[ ]?db` | `MySQL`, `My SQL`, `MariaDB` |
+| `mongo[ ]?db`, `mongo` | `MongoDB`, `Mongo DB`, `Mongo` |
+| `sql[ ]?server`, `sqlite` | `SQL Server`, `SQLServer`, `SQLite` |
+| `no[ -]?sql` | `NoSQL`, `No SQL`, `No-SQL` |
+| `redis`, `firebase` | `Redis`, `Firebase` |
+| `sql` | `SQL` |
+
+The order matters: `sql` is last, so `SQL Server` and `NoSQL` are matched as
+a whole before the generic `SQL` can match part of them. Because of the
+lookbehind, `SQL` is also never found inside `PostgreSQL` or `MySQL`.
+
+- Accepts: `Postgres`, `Mongo DB`, `NoSQL`, `SQL`
+- Rejects: the `SQL` inside `PostgreSQL`
+
 ## How `extract_education` combines them
 
 It collects the matches of patterns 5 and 6, sorts them by position in the
@@ -168,7 +246,18 @@ text, collapses repeated spaces and removes duplicates. Result for
   institution word and the institution also swallows the last degree word
   (`Master of Science Stanford` and `Science Stanford University`).
 
+- Skills are searched in the whole text, not only in a "Technical Skills"
+  section, so a technology mentioned in a job description is also extracted.
+- Some technology names are also ordinary English words. Where possible the
+  pattern requires an extra marker (`js` for Node, Express and Next; `boot` for
+  Spring; a capital letter for Swift, Rust, Ruby and Scala), but a plain
+  "react" or "angular" in a sentence is still reported as a framework.
+- Technologies that are not in the lists are not detected. Adding one means
+  adding an alternative in `patterns.py` (and its canonical form in stage 2).
+
 ## Tests
 
-`tests/test_extraction_contact.py` and `tests/test_extraction_education.py`
-cover every pattern with accepted and rejected examples.
+`tests/test_extraction_contact.py`, `tests/test_extraction_education.py` and
+`tests/test_extraction_skills.py` cover every pattern with accepted and
+rejected examples, and check the two assignment resumes end to end
+(`examples/resumes/`).
