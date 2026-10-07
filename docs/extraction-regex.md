@@ -107,7 +107,7 @@ Strategy (`extract_name`):
 ```
 
 `KEYWORD` is one of: `bachelor`, `master` (with optional `'s`), `doctorate`,
-`PhD`, `BSc`, `MSc`, `associate degree`, `ingeniería`, `ingeniero/a`,
+`PhD`, `BSc`, `MSc`, `associate degree`, `ingeniería`,
 `tecnólogo`, `especialización`, `maestría`, `doctorado`, `licenciatura`.
 `STOP` is one of: `from at with con desde universidad university instituto
 institute college`.
@@ -129,7 +129,7 @@ by the generic word class.
 ## 6. Institutions
 
 ```
-\b(?:Universidad|Universidade|Instituto|Politécnico|Pontificia|Escuela|Fundación)(?:[ \t]+(?:de|del|la|los|las|y)\b)?(?:[ \t]+CAP)+
+\b(?:Universidad|Universidade|Instituto|Politécnico|Pontificia|Escuela|Fundación)(?:[ \t]+(?:de|del|la|los|las|y)\b)*(?:[ \t]+CAP)+(?:(?:[ \t]+(?:de|del|la|los|las|y)\b)+(?:[ \t]+CAP)+)*
 | \b(?:CAP[ \t]+){1,3}(?:University|Institute|College)(?:[ \t]+of(?:[ \t]+CAP)+)?
 | \b(?:University|Institute|College)[ \t]+of(?:[ \t]+CAP)+
 ```
@@ -138,7 +138,7 @@ with `CAP = [A-ZÁÉÍÓÚÑ][\w'’-]*`. Case-sensitive.
 
 | Alternative | Recognizes |
 |---|---|
-| 1 | Spanish/Portuguese form: institution word, optional connector, then capitalized words (`Universidad Icesi`, `Pontificia Universidad Javeriana`) |
+| 1 | Spanish/Portuguese form: institution word, optional connectors (`de`, `de los`, `y`...), capitalized words, and more connector + capitalized-word groups (`Universidad Icesi`, `Pontificia Universidad Javeriana`, `Universidad de los Andes`, `Instituto Tecnológico de Cali`) |
 | 2 | English form with the institution word last (`Stanford University`, `Massachusetts Institute of Technology`) |
 | 3 | English form with the institution word first (`University of Michigan`) |
 
@@ -261,12 +261,13 @@ a language nor a tool.
 
 | Alternative | Spellings recognized |
 |---|---|
-| `rest(?:ful)?[ -]?apis?` | `REST API`, `REST APIs`, `RESTful API`, `REST-API` |
+| `rest(?:ful)?[ -]?apis?`, `apis?[ ]rest(?:ful)?` | `REST API`, `REST APIs`, `RESTful API`, `REST-API`, `API REST` |
 | `restful(?:[ ]web)?[ ]services?`, `restful` | `RESTful services`, `RESTful web services`, `RESTful` |
 | `graphql`, `microservices?` | `GraphQL`, `microservice(s)` |
 | `machine[ -]learning(?:[ ]models?)?(?:[ ]development)?` | `machine learning`, `Machine-learning model development` |
+| `aprendizaje[ ](?:autom[áa]tico\|de[ ]m[áa]quinas?\|profundo)` | `aprendizaje automático`, `aprendizaje de máquina`, `aprendizaje profundo` |
 | `deep[ -]learning` | `deep learning` |
-| `predictive[ ]model(?:s\|ing)?` | `predictive model(s)`, `predictive modeling` |
+| `predictive[ ]model(?:s\|ing)?`, `modelos?[ ]predictivos?` | `predictive model(s)`, `predictive modeling`, `modelo(s) predictivo(s)` |
 | `data[ -]processing(?:[ ]pipelines?)?` | `data processing`, `data-processing pipelines` |
 | `(?-i:ML)` | only the capital abbreviation `ML` |
 
@@ -355,6 +356,11 @@ assert load_json("output/resume.json") == result
 - Names are only detected in the first three non-empty lines or after a
   `Name:` label; a name written elsewhere is not found.
 - Phone numbers must have ten digits; other national formats are not covered.
+- `Ingeniero/a de Sistemas` written as a title is not detected as a degree,
+  because "Ingeniera de datos" is also a job title; only `Ingeniería ...` is.
+  The institution is still found.
+- Line endings (`\r\n`) are normalized at the start of `extract()`; the
+  individual functions expect `\n`.
 - Degree phrases stop at the first digit, comma or stop word, so a long program
   name can be cut at five words.
 - If a degree is followed directly by an institution with no comma and no stop

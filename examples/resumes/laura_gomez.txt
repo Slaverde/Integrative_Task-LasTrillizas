@@ -1,0 +1,16 @@
+CURRICULUM VITAE
+LAURA GÓMEZ RAMÍREZ
+Correo: laura.gomez@gmail.com
+Tel: 315 456 7890
+LinkedIn: linkedin.com/in/laura-gomez-r
+
+Perfil: Ingeniera de datos con 4 años de experiencia en analítica y modelos predictivos.
+
+Formación
+- Ingeniería de Sistemas, Pontificia Universidad Javeriana (2016-2021)
+- Maestría en Analítica, Universidad de los Andes
+
+Habilidades: python, Pandas, numpy, sklearn, PyTorch, Postgres, mongo db, Docker, github, Jupyter
+
+Experiencia
+Analista de Datos en Bancolombia (2021 - Actualidad)

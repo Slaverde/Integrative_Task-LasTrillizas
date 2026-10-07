@@ -39,7 +39,7 @@ _NAME_BODY = rf"{_NAME_WORD}(?:[ \t]+{_NAME_WORD}){{1,3}}"
 NAME = re.compile(_NAME_BODY)
 
 LABELED_NAME = re.compile(
-    rf"^[ \t]*(?i:name|nombre)[ \t]*:[ \t]*({_NAME_BODY})[ \t]*$", re.M
+    rf"^[ \t]*(?i:name|nombre)[ \t]*:[ \t]*({_NAME_BODY})[ \t\r]*$", re.M
 )
 
 # Words that look like a name on the first line but are resume headings.
@@ -52,7 +52,7 @@ NAME_STOPWORDS = frozenset(
 _DEGREE_KEYWORD = (
     r"(?:bachelor(?:'s|’s)?|master(?:'s|’s)?|doctorate|ph\.?d|b\.?sc|m\.?sc"
     r"|associate(?:'s|’s)?[ \t]+degree"
-    r"|ingenier[íi]a|ingeniero|ingeniera|tecn[óo]logo|especializaci[óo]n"
+    r"|ingenier[íi]a|tecn[óo]logo|especializaci[óo]n"
     r"|maestr[íi]a|doctorado|licenciatura)"
 )
 _DEGREE_STOP = (
@@ -70,7 +70,8 @@ _CAP = r"[A-ZÁÉÍÓÚÑ][\w'’-]*"
 
 INSTITUTION = re.compile(
     rf"\b(?:Universidad|Universidade|Instituto|Polit[ée]cnico|Pontificia|Escuela"
-    rf"|Fundaci[óo]n)(?:[ \t]+(?:de|del|la|los|las|y)\b)?(?:[ \t]+{_CAP})+"
+    rf"|Fundaci[óo]n)(?:[ \t]+(?:de|del|la|los|las|y)\b)*(?:[ \t]+{_CAP})+"
+    rf"(?:(?:[ \t]+(?:de|del|la|los|las|y)\b)+(?:[ \t]+{_CAP})+)*"
     rf"|\b(?:{_CAP}[ \t]+){{1,3}}(?:University|Institute|College)"
     rf"(?:[ \t]+of(?:[ \t]+{_CAP})+)?"
     rf"|\b(?:University|Institute|College)[ \t]+of(?:[ \t]+{_CAP})+"
@@ -180,11 +181,14 @@ CONCEPT = _skill_pattern(
         r"rest(?:ful)?[ -]?apis?",
         r"restful(?:[ ]web)?[ ]services?",
         r"restful",
+        r"apis?[ ]rest(?:ful)?",
         r"graphql",
         r"microservices?",
         r"machine[ -]learning(?:[ ]models?)?(?:[ ]development)?",
+        r"aprendizaje[ ](?:autom[áa]tico|de[ ]m[áa]quinas?|profundo)",
         r"deep[ -]learning",
         r"predictive[ ]model(?:s|ing)?",
+        r"modelos?[ ]predictivos?",
         r"data[ -]processing(?:[ ]pipelines?)?",
         r"(?-i:ML)",
     ]
@@ -227,6 +231,7 @@ JOB = re.compile(
     r"(?:Developer|Engineer|Analyst|Intern|Manager|Consultant|Architect|Scientist"
     r"|Administrator|Designer|Desarrolladora?|Analista|Practicante|Pasante"
     r"|Consultor|Arquitecto|Cient[ií]fico)\b"
+    rf"(?:[ \t]+(?:de|del)[ \t]+{_CAP}(?:[ \t]+{_CAP}){{0,2}})?"
     rf"(?:[ \t]+(?:at|en|@)[ \t]+{_CAP}(?:[ \t]+{_CAP}){{0,3}})?"
     rf"(?:[ \t]*[,(|–—-]*[ \t]*{_DATE_RANGE}\)?)?"
 )

@@ -29,6 +29,7 @@ def extract(text: str) -> ExtractionResult:
     Every field of ExtractionResult is filled; a field with nothing found
     stays empty (or None for the name and the years of experience).
     """
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
     return ExtractionResult(
         name=extract_name(text),
         emails=extract_emails(text),
