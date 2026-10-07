@@ -8,7 +8,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 
 from src.vocabulary import Profile
 
@@ -32,6 +32,10 @@ class ExtractionResult:
     education: list[str] = field(default_factory=list)
     experience_years: int | None = None
     experience: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        """Plain dictionary, ready to be saved as JSON."""
+        return asdict(self)
 
     def raw_skills(self) -> list[str]:
         """All qualification strings that stage 2 must normalize."""

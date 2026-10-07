@@ -9,9 +9,9 @@ candidate satisfies a profile (stage 3). Results are stored in the
 `ExtractionResult` data class (`src/contracts.py`), keeping the order of
 appearance and removing duplicates.
 
-This document covers contact information, academic qualifications and
-technical skills (languages, frameworks/libraries and databases). Tools and
-experience are added in a later commit.
+This document covers every type of information of stage 1: contact data,
+academic qualifications, technical skills (languages, frameworks/libraries,
+databases, tools), other qualifications (concepts) and professional experience.
 
 Notation: `[ \t]` is used instead of `\s` so a match never crosses a line
 break; `\w` is a letter, digit or underscore.
@@ -146,6 +146,16 @@ with `CAP = [A-ZÁÉÍÓÚÑ][\w'’-]*`. Case-sensitive.
 - Rejects: the line break after an institution (`Universidad Icesi\nPython`
   gives only `Universidad Icesi`)
 
+## How `extract_education` combines them
+
+It collects the matches of patterns 5 and 6, sorts them by position in the
+text, collapses repeated spaces and removes duplicates. Result for
+`Ingeniería de Sistemas y Computación, Universidad Icesi (2019 - 2024)`:
+
+```python
+["Ingeniería de Sistemas y Computación", "Universidad Icesi"]
+```
+
 ## 7. Skills: common structure
 
 The three skill patterns are built by the same function (`_skill_pattern` in
@@ -224,14 +234,120 @@ lookbehind, `SQL` is also never found inside `PostgreSQL` or `MySQL`.
 - Accepts: `Postgres`, `Mongo DB`, `NoSQL`, `SQL`
 - Rejects: the `SQL` inside `PostgreSQL`
 
-## How `extract_education` combines them
+## 11. Tools
 
-It collects the matches of patterns 5 and 6, sorts them by position in the
-text, collapses repeated spaces and removes duplicates. Result for
-`Ingeniería de Sistemas y Computación, Universidad Icesi (2019 - 2024)`:
+Built with the same `_skill_pattern` structure as section 7.
+
+| Alternative | Spellings recognized |
+|---|---|
+| `git[ ]?hub`, `git[ ]?lab`, `bit[ ]?bucket`, `git` | `GitHub`, `Git Hub`, `GitLab`, `Bitbucket`, `Git` (the longer names come before `git`) |
+| `docker`, `kubernetes`, `k8s` | `Docker`, `Kubernetes`, `K8s` |
+| `jenkins`, `jira`, `postman` | the tool names |
+| `jupyter(?:[ ]?(?:notebooks?\|lab))?` | `Jupyter`, `Jupyter Notebook`, `JupyterLab` |
+| `linux`, `aws`, `azure`, `gcp` | operating system and cloud platforms |
+| `npm`, `webpack`, `maven`, `gradle` | build and package tools |
+| `ci/cd` | `CI/CD` |
+
+`extract_tools` discards a match that lies inside a link or an e-mail, so the
+`github` of `github.com/ana` is reported as a link, not as a tool.
+
+- Accepts: `Git`, `GitHub`, `Docker`, `Jupyter Notebook`, `CI/CD`
+- Rejects: the `git` inside `digital`, the `github` inside `github.com/ana`
+
+## 12. Other qualifications (concepts)
+
+Practices and areas of knowledge that the profiles ask for and that are neither
+a language nor a tool.
+
+| Alternative | Spellings recognized |
+|---|---|
+| `rest(?:ful)?[ -]?apis?` | `REST API`, `REST APIs`, `RESTful API`, `REST-API` |
+| `restful(?:[ ]web)?[ ]services?`, `restful` | `RESTful services`, `RESTful web services`, `RESTful` |
+| `graphql`, `microservices?` | `GraphQL`, `microservice(s)` |
+| `machine[ -]learning(?:[ ]models?)?(?:[ ]development)?` | `machine learning`, `Machine-learning model development` |
+| `deep[ -]learning` | `deep learning` |
+| `predictive[ ]model(?:s\|ing)?` | `predictive model(s)`, `predictive modeling` |
+| `data[ -]processing(?:[ ]pipelines?)?` | `data processing`, `data-processing pipelines` |
+| `(?-i:ML)` | only the capital abbreviation `ML` |
+
+A plain `REST` is not matched because "rest" is an ordinary word; it needs
+`API(s)` or the `ful` suffix. `ML` is case-sensitive so `html` and `xml` do not
+match.
+
+- Accepts: `REST APIs`, `machine learning`, `data-processing pipelines`, `ML`
+- Rejects: `take a rest during the rest of the day`, `html`
+
+## 13. Professional experience
+
+### Years of experience
+
+```
+(?<![\w.])(\d{1,2}(?:[.,]\d)?|one|two|...|ten)\+?[ \t]*(?:years?|yrs?|años?)[ \t]+(?:(?:of|de)[ \t]+)?(?:(?:professional|work|relevant|industry|hands-on|profesional)[ \t]+)?(?:experience|experiencia)(?!\w)
+```
+(case-insensitive)
+
+| Part | Recognizes |
+|---|---|
+| `(\d{1,2}(?:[.,]\d)?\|one\|...\|ten)` | The number, written with digits (`3`, `1.5`) or as a word up to ten. Group 1 |
+| `\+?` | An optional `+` (`2+ years`) |
+| `(?:years?\|yrs?\|años?)` | The unit in English or Spanish |
+| `(?:(?:of\|de)[ \t]+)?` | Optional connector |
+| `(?:professional\|work\|...)[ \t]+` | Optional qualifier before "experience" |
+| `(?:experience\|experiencia)` | The word that makes the number mean experience |
+
+`extract_experience_years` converts the number to `int` (`1.5` becomes `1`) and
+returns the largest one found, or `None`.
+
+- Accepts: `3 years of experience`, `2+ years of professional experience`,
+  `4 años de experiencia`, `Five years of relevant experience`
+- Rejects: `The company was founded 10 years ago` (no "experience")
+
+### Experience statement
+
+The same pattern followed by an optional description:
+
+```
+YEARS_PATTERN(?:[ \t]+(?:in|with|developing|building|using|as|working[ \t]+(?:in|with|on)|en|con|desarrollando)[ \t]+[^.\n;]+)?
+```
+
+The description stops at a period, a semicolon or the end of the line:
+`3 years of experience developing web applications`.
+
+### Job entry
+
+```
+\b(?:CAP[ \t]+){0,3}(?:Developer|Engineer|Analyst|Intern|Manager|Consultant|Architect|Scientist|Administrator|Designer|Desarrolladora?|Analista|Practicante|Pasante|Consultor|Arquitecto|Cient[ií]fico)\b(?:[ \t]+(?:at|en|@)[ \t]+CAP(?:[ \t]+CAP){0,3})?(?:[ \t]*[,(|–—-]*[ \t]*DATE_RANGE\)?)?
+```
+
+with `DATE_RANGE = (?:19|20)\d{2}[ \t]*[-–—][ \t]*(?:(?:19|20)\d{2}|present|current|presente|actualidad|actual)`.
+
+| Part | Recognizes |
+|---|---|
+| `(?:CAP[ \t]+){0,3}` | Up to three capitalized words before the role (`Senior Backend`) |
+| `(?:Developer\|Engineer\|...)` | A role word in English or Spanish |
+| `(?:[ \t]+(?:at\|en\|@)[ \t]+CAP(...){0,3})?` | Optional company: `at Acme Corp` |
+| `(?:...DATE_RANGE\)?)?` | Optional date range, with a separator or parenthesis before it |
+
+- Accepts: `Senior Backend Developer at Acme Corp (2020 - 2023)`,
+  `Data Analyst en Bancolombia, 2018-2020`, `Software Engineer Intern`
+- Rejects: `I like to develop` (no role word)
+
+`extract_experience` collects the statements and the job entries, sorts them by
+position and removes duplicates.
+
+## 14. Keeping the result
+
+The assignment asks to keep the extracted information in a file or a data
+structure. `extract` returns an `ExtractionResult` (the data structure), and
+`src/extraction/storage.py` saves and loads it as UTF-8 JSON:
 
 ```python
-["Ingeniería de Sistemas y Computación", "Universidad Icesi"]
+from src.extraction import extract
+from src.extraction.storage import save_json, load_json
+
+result = extract(text)
+save_json(result, "output/resume.json")
+assert load_json("output/resume.json") == result
 ```
 
 ## Known limitations
@@ -252,12 +368,16 @@ text, collapses repeated spaces and removes duplicates. Result for
   pattern requires an extra marker (`js` for Node, Express and Next; `boot` for
   Spring; a capital letter for Swift, Rust, Ruby and Scala), but a plain
   "react" or "angular" in a sentence is still reported as a framework.
+- Job entries need a role word from the list and a capitalized title; titles
+  such as "Ninja" or lowercase roles are not found. Years of experience are
+  read only from phrases that include the word "experience"/"experiencia".
 - Technologies that are not in the lists are not detected. Adding one means
   adding an alternative in `patterns.py` (and its canonical form in stage 2).
 
 ## Tests
 
-`tests/test_extraction_contact.py`, `tests/test_extraction_education.py` and
-`tests/test_extraction_skills.py` cover every pattern with accepted and
-rejected examples, and check the two assignment resumes end to end
-(`examples/resumes/`).
+`tests/test_extraction_contact.py`, `tests/test_extraction_education.py`,
+`tests/test_extraction_skills.py`, `tests/test_extraction_experience.py` and
+`tests/test_extraction_tools_concepts.py` cover every pattern with accepted and
+rejected examples, a full resume with every field, the JSON round trip and the
+two assignment resumes end to end (`examples/resumes/`).

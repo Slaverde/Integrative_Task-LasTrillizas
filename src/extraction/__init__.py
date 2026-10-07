@@ -10,7 +10,14 @@ from src.extraction.contact import (
     extract_phones,
 )
 from src.extraction.education import extract_education
-from src.extraction.skills import extract_databases, extract_frameworks, extract_languages
+from src.extraction.experience import extract_experience, extract_experience_years
+from src.extraction.skills import (
+    extract_concepts,
+    extract_databases,
+    extract_frameworks,
+    extract_languages,
+    extract_tools,
+)
 
 
 def extract(text: str) -> ExtractionResult:
@@ -19,9 +26,8 @@ def extract(text: str) -> ExtractionResult:
     Input:  resume text (str).
     Output: ExtractionResult with raw strings, no normalization.
 
-    Contact data, education, languages, frameworks and databases are extracted
-    so far; tools, concepts and experience are added in the next commit and
-    stay empty until then.
+    Every field of ExtractionResult is filled; a field with nothing found
+    stays empty (or None for the name and the years of experience).
     """
     return ExtractionResult(
         name=extract_name(text),
@@ -31,5 +37,9 @@ def extract(text: str) -> ExtractionResult:
         languages=extract_languages(text),
         frameworks=extract_frameworks(text),
         databases=extract_databases(text),
+        tools=extract_tools(text),
+        concepts=extract_concepts(text),
         education=extract_education(text),
+        experience_years=extract_experience_years(text),
+        experience=extract_experience(text),
     )
