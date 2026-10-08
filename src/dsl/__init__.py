@@ -11,6 +11,7 @@ from textx.exceptions import TextXSyntaxError
 from src.contracts import CandidateProfile
 from src.dsl import semantics
 from src.dsl.errors import DSLError, DSLSemanticError, DSLSyntaxError
+from src.dsl.html import render_html, save_html
 from src.vocabulary import Profile
 
 __all__ = [
@@ -19,6 +20,7 @@ __all__ = [
     "DSLSyntaxError",
     "parse",
     "render_html",
+    "save_html",
     "to_dsl_text",
     "validate",
 ]
@@ -103,12 +105,3 @@ def validate(dsl_text: str):
     model = parse(dsl_text)
     semantics.check(model)
     return model
-
-
-def render_html(model) -> str:
-    """Generate the HTML visualization of a validated model.
-
-    Input:  validated textX model.
-    Output: HTML document as a string.
-    """
-    raise NotImplementedError("Stage 4 HTML output is implemented in commit 9")
