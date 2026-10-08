@@ -32,7 +32,8 @@ HTML visualization
 | 3 | `classify(tokens, profile)` | sorted tokens, `Profile` | `bool` |
 | 3 | `classify_all(tokens)` | canonical tokens | `dict[Profile, bool]` |
 | 4 | `to_dsl_text(candidate)` | `CandidateProfile` | DSL source text |
-| 4 | `validate(dsl_text)` | DSL source text | textX model (raises on invalid input) |
+| 4 | `parse(dsl_text)` | DSL source text | textX model (grammar only; raises `DSLSyntaxError`) |
+| 4 | `validate(dsl_text)` | DSL source text | validated textX model (raises `DSLSyntaxError` or `DSLSemanticError`) |
 | 4 | `render_html(model)` | validated model | HTML string |
 | - | `run_pipeline(text)` | resume text | HTML string |
 

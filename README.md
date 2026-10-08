@@ -48,7 +48,7 @@ Etapa 4:        perfil validado y HTML del candidato
 | 1. Extracción | Lista, con pruebas y documentación |
 | 2. Normalización | Pendiente |
 | 3. Reconocimiento | Pendiente |
-| 4. DSL y HTML | Gramática EBNF definida, falta implementarla en textX |
+| 4. DSL y HTML | Lista: gramática textX, validación y generador de HTML |
 
 Los perfiles `BACKEND_DEVELOPER` y `DATA_SCIENTIST` son provisionales hasta que el profesor confirme los requisitos de los dos perfiles propios.
 
@@ -76,6 +76,12 @@ Para ver la etapa 1 sobre una hoja de vida de ejemplo:
 python -c "from src.extraction import extract; print(extract(open('examples/resumes/wednesday_addams.txt', encoding='utf-8').read()))"
 ```
 
+Para generar la página HTML de un perfil ya estructurado (etapa 4) y abrirla en el navegador:
+
+```bash
+python -m src.dsl examples/dsl/valid/wednesday_addams.rl wednesday.html
+```
+
 ## Documentación
 
 - [Requisitos y trazabilidad](docs/requirements.md): qué pide el enunciado y dónde lo cubrimos.
@@ -83,4 +89,7 @@ python -c "from src.extraction import extract; print(extract(open('examples/resu
 - [Etapa 1, expresiones regulares](docs/extraction-regex.md): cada patrón, qué reconoce y sus límites.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
+- [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).
+- [Etapa 4, casos de prueba](docs/test-cases-dsl.md): escenarios del DSL, el HTML y la forma normal.
 - [Hojas de vida y sentencias de ejemplo](examples/README.md).
+- [Páginas HTML de ejemplo](docs/samples/): el resultado de la etapa 4, ábrelas en el navegador.

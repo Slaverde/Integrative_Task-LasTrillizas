@@ -1,0 +1,83 @@
+// Candidate profile language. Formal definition (EBNF): docs/dsl-grammar.md
+
+Candidate:
+    'candidate' name=Text '{'
+        contact=Contact?
+        experience=Experience?
+        education=Education?
+        skills=Skills
+        results=Results
+    '}'
+;
+
+Contact:
+    'contact' '{' items+=ContactItem '}'
+;
+
+ContactItem:
+    Email | Phone | Link
+;
+
+Email:
+    'email' ':' value=Text
+;
+
+Phone:
+    'phone' ':' value=Text
+;
+
+Link:
+    'link' ':' value=Text
+;
+
+Experience:
+    'experience' '{'
+        ( 'years' ':' years=Years jobs*=Job | jobs+=Job )
+    '}'
+;
+
+Job:
+    'job' ':' text=Text
+;
+
+Education:
+    'education' '{' studies+=Study '}'
+;
+
+Study:
+    'study' ':' text=Text
+;
+
+Skills:
+    'skills' '{' ( items+=Token[','] )? '}'
+;
+
+Results:
+    'results' '{' items+=Result '}'
+;
+
+Result:
+    profile=Token ':' status=Status
+;
+
+Status:
+    'ACCEPTED' | 'REJECTED'
+;
+
+// Lexical rules. Years is not the built-in INT: INT accepts a sign and gives
+// 0 when the attribute is missing, and here a missing value must stay None.
+Years:
+    /[0-9]+/
+;
+
+Text:
+    /"[^"\n]*"/
+;
+
+Token:
+    /[A-Z][A-Z0-9]*(_[A-Z0-9]+)*/
+;
+
+Comment:
+    /\/\/.*$/
+;

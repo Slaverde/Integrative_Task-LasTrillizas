@@ -22,6 +22,8 @@ def run_pipeline(text: str) -> str:
         education=extracted.education,
         skills=tokens,
         classifications=classifications,
+        links=extracted.links,
+        experience=extracted.experience,
     )
     model = validate(to_dsl_text(candidate))
     return render_html(model)

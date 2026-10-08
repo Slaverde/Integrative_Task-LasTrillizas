@@ -38,7 +38,7 @@ not rank candidates or decide hiring; it only checks qualification patterns.
 |---|---|
 | RAA1 - regular expressions and automata theory for language processing | stages 1, 2 and 3 |
 | RAA2 - generative grammars for specialized languages | stage 4 |
-| RAA3 - simplify grammars with normal forms | normal form of the DSL grammar (commit 10) |
+| RAA3 - simplify grammars with normal forms | [dsl-grammar-normal-form.md](dsl-grammar-normal-form.md) |
 | RAA6 - communicate with specialized vocabulary | poster and presentation |
 
 ## Pipeline example from the assignment

@@ -6,8 +6,8 @@ the normalized skills and the result of the classification for every profile.
 
 Input of this stage: the output of stages 1 to 3 (`CandidateProfile`,
 `src/contracts.py`). Output: a validated model and an HTML visualization.
-The grammar is implemented with textX in `src/dsl/` (next commit); this
-document is its formal definition.
+The grammar is implemented with textX in `src/dsl/candidate.tx` (section 8);
+this document is its formal definition.
 
 ## 1. Example sentence
 
@@ -215,3 +215,120 @@ parsing (semantic rules).
   added.
 - **Strings cannot contain `"`.** It keeps the lexical rule simple; stage 1
   never produces a double quote inside a name, job or degree.
+
+## 8. Implementation with textX
+
+| File | Role |
+|---|---|
+| `src/dsl/candidate.tx` | The grammar in textX syntax |
+| `src/dsl/__init__.py` | `to_dsl_text`, `parse`, `validate` |
+| `src/dsl/semantics.py` | Semantic rules S1 to S6 |
+| `src/dsl/errors.py` | `DSLError`, `DSLSyntaxError`, `DSLSemanticError` |
+
+### From EBNF to textX
+
+| EBNF | textX rule | Note |
+|---|---|---|
+| `candidate_profile` | `Candidate` | `contact=Contact?` makes a section optional |
+| `contact`, `contact_item` | `Contact`, `ContactItem: Email \| Phone \| Link` | `items+=ContactItem` is "one or more" |
+| `experience`, `job` | `Experience`, `Job` | `( 'years' ':' years=Years jobs*=Job \| jobs+=Job )` |
+| `education`, `study` | `Education`, `Study` | |
+| `skills` | `Skills` | `( items+=Token[','] )?` is the optional comma-separated list |
+| `results`, `result`, `status` | `Results`, `Result`, `Status` | |
+| `text`, `token`, `comment` | `Text`, `Token`, `Comment` | regular expressions |
+| `integer` | `Years` | see below |
+
+Two small differences from the textX defaults:
+
+- **`Years` instead of the built-in `INT`.** `INT` accepts a sign (`years: -1`
+  would parse) and gives `0` when the value is missing, which would show
+  "0 years" for a candidate whose resume says nothing about it. `Years` is
+  `[0-9]+`, as in the EBNF, and stays `None` when absent.
+- **`Text` loses its quotes.** An object processor removes the surrounding
+  quotes, so the model holds `Ana`, not `"Ana"`.
+
+### Using it
+
+```python
+from src.dsl import to_dsl_text, validate, DSLSyntaxError, DSLSemanticError
+
+text = to_dsl_text(candidate)          # CandidateProfile -> DSL text
+try:
+    model = validate(text)             # grammar + semantic rules S1 to S6
+except DSLSyntaxError as error:
+    print(error.line, error.column, error.message)
+except DSLSemanticError as error:
+    print(error.errors)                # every violated rule, with its line
+```
+
+- `parse(text)` checks only the grammar (lexical and syntactic rules).
+- `validate(text)` runs `parse` and then the semantic rules, and reports all
+  the semantic problems together.
+- `to_dsl_text` writes all four profiles (a missing one becomes `REJECTED`),
+  leaves out the empty optional sections, and makes strings safe: a `"` inside
+  a name or job becomes `'` and line breaks become spaces.
+
+### Tests
+
+`tests/test_dsl.py` runs every file of `examples/dsl/` (valid ones are
+accepted, lexical and syntactic ones are rejected by `parse`, semantic ones
+pass `parse` and fail `validate` with the rule named in the file), checks the
+model that `validate` returns, the position of syntax errors, each semantic
+rule at its limits, and the round trip `CandidateProfile` -> text -> model.
+
+## 9. HTML visualization
+
+Once a profile is valid, `render_html(model)` (`src/dsl/html.py`) produces a
+one-page HTML document, as the assignment asks. It follows the structure of
+the example page of the assignment: header with the candidate name, personal
+information, experience, normalized skills and the qualification evaluation.
+
+| Section | Content | Shown when |
+|---|---|---|
+| Header | Candidate name | always |
+| Contact | E-mails (`mailto:`), phones (`tel:`) and links | the profile has contact items |
+| Experience | Years and job entries | the profile has an `experience` block |
+| Education | Degrees and institutions | the profile has an `education` block |
+| Normalized Technical Skills | One chip per canonical token, with its category as a tooltip | always (a note if there are none) |
+| Qualification Evaluation | One card per profile with an `ACCEPTED` or `REJECTED` badge, and a summary of the accepted profiles | always |
+
+Only data that the DSL really has is shown. The example page of the assignment
+also has a location, a role and a free-text summary; ResumeLens does not extract
+those, so it does not invent them.
+
+Design decisions:
+
+- **Everything from the resume is escaped.** A name such as
+  `<script>...</script>` is shown as text, never run. A link is turned into a
+  clickable address only if it starts with `http://`, `https://`, `www.`,
+  `linkedin.com/` or `github.com/`; anything else (for example
+  `javascript:...`) is shown as plain text.
+- **One self-contained file.** No external fonts, scripts, images or style
+  sheets, so the page works offline and can be attached or printed.
+- **Not only colour.** The result is a text badge (`ACCEPTED` / `REJECTED`)
+  with a border; colour is only a reinforcement. The page has a dark theme and
+  a layout for narrow screens.
+- **Neutral wording.** The footer repeats that ResumeLens checks patterns and
+  does not rank candidates or make hiring decisions.
+
+### Generating a page
+
+```bash
+python -m src.dsl examples/dsl/valid/wednesday_addams.rl wednesday.html
+```
+
+The command validates the profile first. An invalid profile prints the reason
+and writes nothing (exit code 1). Pages generated from the four valid examples
+are in [`samples/`](samples/); `tests/test_dsl_html.py` checks that they match
+the generator, so they never get out of date.
+
+The tests (`tests/test_dsl_html.py`) cover a well-formed page for every
+example, optional sections, plural years, accepted and rejected profiles, links,
+escaping against injected HTML, the self-contained property, saving the file
+and the command line.
+
+## 10. Related documents
+
+- [dsl-grammar-normal-form.md](dsl-grammar-normal-form.md): the grammar written as
+  plain productions, simplified and converted to Chomsky normal form (RAA3).
+- [test-cases-dsl.md](test-cases-dsl.md): test scenarios of this stage.

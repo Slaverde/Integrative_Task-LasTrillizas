@@ -59,6 +59,8 @@ class CandidateProfile:
     education: list[str]
     skills: list[str]  # canonical tokens, already sorted
     classifications: dict[Profile, bool]
+    links: list[str] = field(default_factory=list)
+    experience: list[str] = field(default_factory=list)  # job entries
 
     def accepted_profiles(self) -> list[Profile]:
         return [p for p, ok in self.classifications.items() if ok]
