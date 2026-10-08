@@ -3,17 +3,22 @@
 from __future__ import annotations
 
 from src.contracts import ExtractionResult
+from src.normalization.transducers import canonical_token as normalize_skill
 from src.vocabulary import Profile
+
+__all__ = ["normalize", "normalize_skill", "sort_for_profile"]
 
 
 def normalize(extracted: ExtractionResult) -> list[str]:
     """Map every raw skill string to its canonical token (e.g. JS -> JAVASCRIPT).
 
     Input:  ExtractionResult.
-    Output: canonical tokens from ``vocabulary.TOKENS``, without duplicates.
-            Strings with no known canonical form are dropped.
+    Output: canonical tokens from ``vocabulary.TOKENS``, without duplicates, in
+            order of first appearance (languages, frameworks, databases, tools,
+            concepts). Strings with no known canonical form are dropped.
     """
-    raise NotImplementedError("Stage 2 is implemented in commits 21-27")
+    tokens = (normalize_skill(raw) for raw in extracted.raw_skills())
+    return list(dict.fromkeys(token for token in tokens if token is not None))
 
 
 def sort_for_profile(tokens: list[str], profile: Profile) -> list[str]:
