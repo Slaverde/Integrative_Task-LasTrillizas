@@ -48,7 +48,7 @@ Etapa 4:        perfil validado y HTML del candidato
 | 1. Extracción | Lista, con pruebas y documentación |
 | 2. Normalización | Pendiente |
 | 3. Reconocimiento | Pendiente |
-| 4. DSL y HTML | Gramática EBNF definida, falta implementarla en textX |
+| 4. DSL y HTML | Gramática textX y validación listas, falta generar el HTML |
 
 Los perfiles `BACKEND_DEVELOPER` y `DATA_SCIENTIST` son provisionales hasta que el profesor confirme los requisitos de los dos perfiles propios.
 
