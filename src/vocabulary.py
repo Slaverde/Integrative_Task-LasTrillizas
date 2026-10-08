@@ -41,20 +41,31 @@ TOKENS: dict[str, Category] = {
     "TYPESCRIPT": Category.LANGUAGE,
     "PYTHON": Category.LANGUAGE,
     "JAVA": Category.LANGUAGE,
+    "KOTLIN": Category.LANGUAGE,
+    "CPP": Category.LANGUAGE,
     # frontend frameworks
     "REACT": Category.FRONTEND,
     "ANGULAR": Category.FRONTEND,
     "VUE": Category.FRONTEND,
+    "NEXT_JS": Category.FRONTEND,
     # backend frameworks
     "NODE_JS": Category.BACKEND,
     "DJANGO": Category.BACKEND,
     "SPRING_BOOT": Category.BACKEND,
     "FLASK": Category.BACKEND,
+    "EXPRESS_JS": Category.BACKEND,
+    "FASTAPI": Category.BACKEND,
     # databases
     "SQL": Category.DATABASE,
     "POSTGRESQL": Category.DATABASE,
     "MYSQL": Category.DATABASE,
     "MONGODB": Category.DATABASE,
+    "MARIADB": Category.DATABASE,
+    "SQL_SERVER": Category.DATABASE,
+    "SQLITE": Category.DATABASE,
+    "NOSQL": Category.DATABASE,
+    "REDIS": Category.DATABASE,
+    "FIREBASE": Category.DATABASE,
     # version control
     "GIT": Category.VERSION_CONTROL,
     # data / ML libraries
@@ -63,12 +74,15 @@ TOKENS: dict[str, Category] = {
     "SCIKIT_LEARN": Category.ML_LIBRARY,
     "TENSORFLOW": Category.ML_LIBRARY,
     "PYTORCH": Category.ML_LIBRARY,
+    "KERAS": Category.ML_LIBRARY,
     # concepts
     "REST_API": Category.CONCEPT,
     "MACHINE_LEARNING": Category.CONCEPT,
+    "GRAPHQL": Category.CONCEPT,
     # tools
     "DOCKER": Category.TOOL,
     "JUPYTER": Category.TOOL,
+    "KUBERNETES": Category.TOOL,
 }
 
 # Canonical category order per profile (used to sort tokens before the
