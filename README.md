@@ -89,5 +89,7 @@ python -m src.dsl examples/dsl/valid/wednesday_addams.rl wednesday.html
 - [Etapa 1, expresiones regulares](docs/extraction-regex.md): cada patrón, qué reconoce y sus límites.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
+- [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).
+- [Etapa 4, casos de prueba](docs/test-cases-dsl.md): escenarios del DSL, el HTML y la forma normal.
 - [Hojas de vida y sentencias de ejemplo](examples/README.md).
 - [Páginas HTML de ejemplo](docs/samples/): el resultado de la etapa 4, ábrelas en el navegador.

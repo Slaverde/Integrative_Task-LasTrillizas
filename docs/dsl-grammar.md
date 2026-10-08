@@ -326,3 +326,9 @@ The tests (`tests/test_dsl_html.py`) cover a well-formed page for every
 example, optional sections, plural years, accepted and rejected profiles, links,
 escaping against injected HTML, the self-contained property, saving the file
 and the command line.
+
+## 10. Related documents
+
+- [dsl-grammar-normal-form.md](dsl-grammar-normal-form.md): the grammar written as
+  plain productions, simplified and converted to Chomsky normal form (RAA3).
+- [test-cases-dsl.md](test-cases-dsl.md): test scenarios of this stage.
