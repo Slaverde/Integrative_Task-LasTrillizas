@@ -47,6 +47,7 @@ Etapa 4:        perfil validado y HTML del candidato
 |---|---|
 | 1. Extracción | Lista, con pruebas y documentación |
 | 2. Normalización | Lista, con pruebas y documentación (transductores, ordenamiento por perfil y formalización) |
+| Pipeline e interfaz | Listos: `src/main.py` une las etapas y `python -m src.ui` las muestra; las pruebas de integración se completan solas cuando exista la etapa 3 |
 | 3. Reconocimiento | Pendiente |
 | 4. DSL y HTML | Lista: gramática textX, validación y generador de HTML |
 
@@ -103,5 +104,6 @@ Abre http://127.0.0.1:8000 en el navegador (`--port 9000` cambia el puerto, `--o
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
 - [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).
 - [Etapa 4, casos de prueba](docs/test-cases-dsl.md): escenarios del DSL, el HTML y la forma normal.
+- [Integración, casos de prueba](docs/test-cases-integration.md): pipeline, cuatro perfiles e interfaz.
 - [Hojas de vida y sentencias de ejemplo](examples/README.md).
 - [Páginas HTML de ejemplo](docs/samples/): el resultado de la etapa 4, ábrelas en el navegador.

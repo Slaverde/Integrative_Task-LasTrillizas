@@ -41,6 +41,7 @@ HTML visualization
 | 3-4 | `complete(analysis, classifier=None)` | `Analysis` | `PipelineResult`: classifications, `CandidateProfile`, DSL text and HTML |
 | - | `run_stages(text, classifier=None)` | resume text | `PipelineResult` (calls `analyze` and `complete`) |
 | - | `run_pipeline(text, classifier=None)` | resume text | HTML string (`run_stages(...).html`) |
+| - | `python -m src.ui` | resume text pasted in a form | page with every stage (`src/ui/`, standard library only) |
 
 The data classes (`ExtractionResult`, `CandidateProfile`) live in
 `src/contracts.py`; the shared vocabulary lives in `src/vocabulary.py`.
