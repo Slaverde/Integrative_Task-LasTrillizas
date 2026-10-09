@@ -69,7 +69,7 @@ LANGUAGE_VARIANTS: Variants = {
     "PYTHON": ("Python", "Python3"),
     "JAVA": ("Java",),
     "KOTLIN": ("Kotlin",),
-    "CPP": ("C++",),
+    "CPP": ("C++", "CPP"),
 }
 
 FRAMEWORK_VARIANTS: Variants = {

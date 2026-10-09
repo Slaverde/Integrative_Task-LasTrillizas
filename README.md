@@ -46,7 +46,7 @@ Etapa 4:        perfil validado y HTML del candidato
 | Etapa | Estado |
 |---|---|
 | 1. Extracción | Lista, con pruebas y documentación |
-| 2. Normalización | En curso: transductores, ordenamiento por perfil y formalización listos; faltan las pruebas de normalización |
+| 2. Normalización | Lista, con pruebas y documentación (transductores, ordenamiento por perfil y formalización) |
 | 3. Reconocimiento | Pendiente |
 | 4. DSL y HTML | Lista: gramática textX, validación y generador de HTML |
 
@@ -90,6 +90,7 @@ python -m src.dsl examples/dsl/valid/wednesday_addams.rl wednesday.html
 - [Etapa 2, diseño y diccionario de variantes](docs/normalization-design.md): cómo se normalizan las variantes y qué decisiones tomamos.
 - [Etapa 2, transductores](docs/normalization-transducers.md): las 7-tuplas, los diagramas y cómo se corresponden con `pyformlang`.
 - [Etapa 2, ordenamiento por perfil](docs/normalization-sorting.md): la regla de orden y por qué no se hace con un transductor.
+- [Etapa 2, casos de prueba](docs/test-cases-normalization.md): escenarios, propiedades y casos límite de la normalización y el ordenamiento.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
 - [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).

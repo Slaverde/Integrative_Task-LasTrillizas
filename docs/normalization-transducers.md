@@ -52,7 +52,7 @@ at most one output.
 | Transducer | \|Q\| | \|Σ\| | \|Γ\| | \|δ\| | \|F\| |
 |---|---|---|---|---|---|
 | C (cleaner) | 1 | 112 | 37 | 112 | 1 |
-| languages | 55 | 20 | 6 | 58 | 6 |
+| languages | 57 | 20 | 6 | 61 | 6 |
 | frameworks | 132 | 25 | 16 | 135 | 16 |
 | databases_tools | 332 | 27 | 17 | 370 | 17 |
 
@@ -127,10 +127,10 @@ q0 --J/ε--> p:J --S/ε--> p:JS --⊣/JAVASCRIPT--> f:JAVASCRIPT
 
 | Element | Definition |
 |---|---|
-| Q | `q0`, `p:w` for every non-empty prefix `w` of a key (the whole key included) and `f:t` for every token `t` of Γ. 55 states |
+| Q | `q0`, `p:w` for every non-empty prefix `w` of a key (the whole key included) and `f:t` for every token `t` of Γ. 57 states |
 | Σ | {+, 3, A, C, E, H, I, J, K, L, M, N, O, P, R, S, T, V, Y, ⊣} |
 | Γ | {`JAVASCRIPT`, `TYPESCRIPT`, `PYTHON`, `JAVA`, `KOTLIN`, `CPP`} |
-| δ | `δ(q0, a) = p:a`; `δ(p:w, a) = p:wa` when `wa` is a prefix of a key; `δ(p:k, ⊣) = f:t` for every key `k` of the table below with token `t`. 58 transitions |
+| δ | `δ(q0, a) = p:a`; `δ(p:w, a) = p:wa` when `wa` is a prefix of a key; `δ(p:k, ⊣) = f:t` for every key `k` of the table below with token `t`. 61 transitions |
 | ω | `ω(q, a) = ε` for a letter `a`; `ω(p:k, ⊣) = t` for the same pairs `(k, t)` |
 | q0 | `q0` |
 | F | {`f:t` : `t` in Γ}, 6 states |
@@ -144,7 +144,7 @@ Keys of the table:
 | `PYTHON` | `PYTHON`, `PYTHON3` |
 | `JAVA` | `JAVA` |
 | `KOTLIN` | `KOTLIN` |
-| `CPP` | `C++` |
+| `CPP` | `C++`, `CPP` |
 
 ```mermaid
 flowchart LR
@@ -154,25 +154,28 @@ flowchart LR
     n3((("f:KOTLIN")))
     n4((("f:PYTHON")))
     n5((("f:TYPESCRIPT")))
-    n6("p:J")
-    n7("p:JAVA")
-    n8("p:PYTHON")
-    n9("p:T")
-    n10(("q0"))
-    n6 -->|"AVA"| n7
-    n6 -->|"S⊣ / JAVASCRIPT"| n2
-    n7 -->|"SCRIPT⊣ / JAVASCRIPT"| n2
-    n7 -->|"⊣ / JAVA"| n1
-    n8 -->|"3⊣ / PYTHON"| n4
-    n8 -->|"⊣ / PYTHON"| n4
-    n9 -->|"S⊣ / TYPESCRIPT"| n5
-    n9 -->|"YPESCRIPT⊣ / TYPESCRIPT"| n5
-    n10 -->|"C++⊣ / CPP"| n0
-    n10 -->|"ECMASCRIPT⊣ / JAVASCRIPT"| n2
-    n10 -->|"J"| n6
-    n10 -->|"KOTLIN⊣ / KOTLIN"| n3
-    n10 -->|"PYTHON"| n8
-    n10 -->|"T"| n9
+    n6("p:C")
+    n7("p:J")
+    n8("p:JAVA")
+    n9("p:PYTHON")
+    n10("p:T")
+    n11(("q0"))
+    n6 -->|"++⊣ / CPP"| n0
+    n6 -->|"PP⊣ / CPP"| n0
+    n7 -->|"AVA"| n8
+    n7 -->|"S⊣ / JAVASCRIPT"| n2
+    n8 -->|"SCRIPT⊣ / JAVASCRIPT"| n2
+    n8 -->|"⊣ / JAVA"| n1
+    n9 -->|"3⊣ / PYTHON"| n4
+    n9 -->|"⊣ / PYTHON"| n4
+    n10 -->|"S⊣ / TYPESCRIPT"| n5
+    n10 -->|"YPESCRIPT⊣ / TYPESCRIPT"| n5
+    n11 -->|"C"| n6
+    n11 -->|"ECMASCRIPT⊣ / JAVASCRIPT"| n2
+    n11 -->|"J"| n7
+    n11 -->|"KOTLIN⊣ / KOTLIN"| n3
+    n11 -->|"PYTHON"| n9
+    n11 -->|"T"| n10
 ```
 
 | Input | C writes | D run | Output |

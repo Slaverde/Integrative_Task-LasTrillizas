@@ -31,6 +31,11 @@ END_MARKER = "⊣"
 
 START = "q0"
 
+MAX_RAW_LENGTH = 100
+"""Longest raw string that can be a spelling (the longest one has 35 characters
+plus a few separators). A longer text is rejected without running the cleaner:
+``pyformlang`` slows down quickly with the length of the input."""
+
 
 def build_cleaner() -> FST:
     """The cleaner C: one state, which is both initial and final.
@@ -105,7 +110,13 @@ def cleaner() -> FST:
 
 
 def clean(text: str) -> str | None:
-    """Run the cleaner. None if the text has a character it does not know."""
+    """Run the cleaner.
+
+    None if the text has a character it does not know or is longer than
+    ``MAX_RAW_LENGTH``.
+    """
+    if len(text) > MAX_RAW_LENGTH:
+        return None
     return _run(cleaner(), list(text))
 
 

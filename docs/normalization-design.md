@@ -89,7 +89,7 @@ inside a category is the tie-break order used by the sorting step
 | `PYTHON` | `Python`, `Python3` |
 | `JAVA` | `Java` |
 | `KOTLIN` | `Kotlin` |
-| `CPP` | `C++` |
+| `CPP` | `C++`, `CPP` |
 
 ### 3.2 Frameworks and libraries
 

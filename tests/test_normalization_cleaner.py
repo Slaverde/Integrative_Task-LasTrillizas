@@ -74,7 +74,7 @@ def test_cleaner_matches_the_reference_function_on_words():
         "React.js, NodeJS",  # the comma is not a separator
         "ÁÉÍÓÚ ñ ü",
         "snake_case_name",
-        "x" * 500,
+        "x" * 100,
     ]
     for word in words:
         try:
@@ -94,3 +94,11 @@ def test_separators_and_accents_are_all_covered():
 def test_case_does_not_change_the_key():
     for word in ["Python", "react.js", "NodeJS", "scikit-learn"]:
         assert clean(word.lower()) == clean(word.upper()) == clean(word.title())
+
+
+def test_a_text_longer_than_any_spelling_is_rejected_at_once():
+    from src.normalization.fst import MAX_RAW_LENGTH
+
+    assert clean("a" * MAX_RAW_LENGTH) == "A" * MAX_RAW_LENGTH
+    assert clean("a" * (MAX_RAW_LENGTH + 1)) is None
+    assert clean("A" * 100_000) is None  # no time spent on it
