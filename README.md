@@ -82,6 +82,14 @@ Para generar la página HTML de un perfil ya estructurado (etapa 4) y abrirla en
 python -m src.dsl examples/dsl/valid/wednesday_addams.rl wednesday.html
 ```
 
+Para usar la interfaz web (pega una hoja de vida o carga un ejemplo y mira cada etapa):
+
+```bash
+python -m src.ui
+```
+
+Abre http://127.0.0.1:8000 en el navegador (`--port 9000` cambia el puerto, `--open` abre el navegador solo). Solo escucha en tu computador. Mientras la etapa 3 no esté implementada, la interfaz muestra las etapas 1 y 2 y avisa que el resto está pendiente.
+
 ## Documentación
 
 - [Requisitos y trazabilidad](docs/requirements.md): qué pide el enunciado y dónde lo cubrimos.
