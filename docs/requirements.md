@@ -8,7 +8,7 @@ Deadline: **October 11, 2026**.
 | ID | Requirement | Formal model | Library | Code | Deliverable in `docs/` |
 |---|---|---|---|---|---|
 | R1 | Extract contact data, languages, frameworks/libraries, databases, academic qualifications, experience, tools and other relevant qualifications; explain each pattern; keep the result in a data structure | Regular expressions | `re` | `src/extraction` | regex catalog (commits 3-5) |
-| R2 | Normalize variants to a canonical form (e.g. `JS`, `Javascript` -> `JAVASCRIPT`) using our own transformations; give the 7-tuple, the diagram and the implementation of each transducer | Finite-state transducers | `pyformlang` | `src/normalization` | transducer definitions (commit 25) |
+| R2 | Normalize variants to a canonical form (e.g. `JS`, `Javascript` -> `JAVASCRIPT`) using our own transformations; give the 7-tuple, the diagram and the implementation of each transducer | Finite-state transducers | `pyformlang` | `src/normalization` | [normalization-transducers.md](normalization-transducers.md) (7-tuples and diagrams), [normalization-design.md](normalization-design.md) |
 | R3 | Sort normalized qualifications by profile order so the result does not depend on the resume order | - | - | `src/normalization` | profile orders (commit 26) |
 | R4 | One automaton per profile; give the 5-tuple, the diagram, the pattern it represents and why it is a DFA, NFA or ε-NFA | Finite automata | `pyformlang` | `src/classification` | automata definitions (commits 17-18) |
 | R5 | Define a DSL for the candidate profile in EBNF (terminals and non-terminals), validate it, reject invalid input and generate an HTML or Markdown visualization | Context-free grammar | `textX` | `src/dsl` | [dsl-grammar.md](dsl-grammar.md) |
