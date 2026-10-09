@@ -148,7 +148,7 @@ the transducers are rebuilt from the dictionary.
 | D4 | Machine-learning concepts | `predictive models`, `deep learning` and the Spanish equivalents normalize to `MACHINE_LEARNING`; `data-processing pipelines` is dropped | The assignment describes an ML engineer as one who builds "predictive or learning-based models"; deep learning is a kind of machine learning; data processing alone says nothing about ML |
 | D5 | Tokens whose category is not in the profile order | `sort_for_profile` puts them **last**, in vocabulary order | The automaton of a profile reads the relevant tokens first and only needs loops in its final states (see `docs/normalization-sorting.md`) |
 | D6 | Several tokens of one category (`JAVASCRIPT` and `PYTHON`) | Stage 2 keeps all of them | Deciding which one satisfies a profile is stage 3's job; stage 2 only normalizes and orders |
-| D7 | Candidate without a name | Decided in the pipeline (`src/main.py`), not here | Stage 2 never sees the name |
+| D7 | Candidate without a name | Not a stage 2 matter: the pipeline names the candidate `Unknown candidate` (see `docs/contracts.md`) | Stage 2 never sees the name |
 | D8 | Order of the output of `normalize` | Order of first appearance in `raw_skills()` (languages, frameworks, databases, tools, concepts), no duplicates | Deterministic; the profile order is applied later by `sort_for_profile` |
 
 ## 5. Contract
