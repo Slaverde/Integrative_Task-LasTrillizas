@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 from src.contracts import ExtractionResult
+from src.normalization.sorting import sort_by_vocabulary, sort_for_profile
 from src.normalization.transducers import canonical_token as normalize_skill
-from src.vocabulary import Profile
 
-__all__ = ["normalize", "normalize_skill", "sort_for_profile"]
+__all__ = ["normalize", "normalize_skill", "sort_by_vocabulary", "sort_for_profile"]
 
 
 def normalize(extracted: ExtractionResult) -> list[str]:
@@ -19,12 +19,3 @@ def normalize(extracted: ExtractionResult) -> list[str]:
     """
     tokens = (normalize_skill(raw) for raw in extracted.raw_skills())
     return list(dict.fromkeys(token for token in tokens if token is not None))
-
-
-def sort_for_profile(tokens: list[str], profile: Profile) -> list[str]:
-    """Order tokens by ``vocabulary.PROFILE_ORDER[profile]``.
-
-    Input:  canonical tokens in any order, and a profile.
-    Output: the same tokens in the profile's canonical order.
-    """
-    raise NotImplementedError("Sorting is implemented in commit 26")
