@@ -88,3 +88,20 @@ CONCEPT are read but optional."""
 def build_machine_learning_engineer() -> DeterministicFiniteAutomaton:
     """DFA for ``Profile.MACHINE_LEARNING_ENGINEER``."""
     return build_automaton(MACHINE_LEARNING_ENGINEER_REQUIRED)
+
+
+BACKEND_DEVELOPER_REQUIRED: list[Category] = [
+    Category.LANGUAGE,
+    Category.BACKEND,
+    Category.DATABASE,
+    Category.VERSION_CONTROL,
+]
+"""Required categories for BACKEND_DEVELOPER, provisional team-defined
+profile (see docs/classification-design.md section 3). Same server-side
+stack as FULL_STACK_DEVELOPER, minus FRONTEND, the one category that tells
+the two roles apart. CONCEPT and TOOL are read but optional."""
+
+
+def build_backend_developer() -> DeterministicFiniteAutomaton:
+    """DFA for ``Profile.BACKEND_DEVELOPER`` (provisional)."""
+    return build_automaton(BACKEND_DEVELOPER_REQUIRED)
