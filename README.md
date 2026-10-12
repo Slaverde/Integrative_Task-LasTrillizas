@@ -102,6 +102,8 @@ Abre http://127.0.0.1:8000 en el navegador (`--port 9000` cambia el puerto, `--o
 - [Etapa 2, casos de prueba](docs/test-cases-normalization.md): escenarios, propiedades y casos límite de la normalización y el ordenamiento.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
 - [Etapa 3, revisión de literatura y diseño de los autómatas](docs/classification-design.md): por qué un DFA, el modelo y las categorías requeridas por perfil.
+- [Etapa 3, autómatas](docs/classification-automata.md): las 5-tuplas y los diagramas de los cuatro perfiles.
+- [Etapa 3, casos de prueba](docs/test-cases-classification.md): escenarios, casos límite y los que separan los dos perfiles propios de los dos del enunciado.
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
 - [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).
 - [Etapa 4, casos de prueba](docs/test-cases-dsl.md): escenarios del DSL, el HTML y la forma normal.
