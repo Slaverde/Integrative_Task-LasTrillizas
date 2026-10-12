@@ -47,8 +47,8 @@ Etapa 4:        perfil validado y HTML del candidato
 |---|---|
 | 1. Extracción | Lista, con pruebas y documentación |
 | 2. Normalización | Lista, con pruebas y documentación (transductores, ordenamiento por perfil y formalización) |
-| Pipeline e interfaz | Listos: `src/main.py` une las etapas y `python -m src.ui` las muestra; las pruebas de integración se completan solas cuando exista la etapa 3 |
-| 3. Reconocimiento | Pendiente |
+| Pipeline e interfaz | Listos: `src/main.py` une las cuatro etapas y `python -m src.ui` las muestra completas |
+| 3. Reconocimiento | Lista, con pruebas: un autómata (DFA) por perfil, ver [docs/classification-design.md](docs/classification-design.md) |
 | 4. DSL y HTML | Lista: gramática textX, validación y generador de HTML |
 
 Los perfiles `BACKEND_DEVELOPER` y `DATA_SCIENTIST` son provisionales hasta que el profesor confirme los requisitos de los dos perfiles propios.
@@ -101,6 +101,7 @@ Abre http://127.0.0.1:8000 en el navegador (`--port 9000` cambia el puerto, `--o
 - [Etapa 2, ordenamiento por perfil](docs/normalization-sorting.md): la regla de orden y por qué no se hace con un transductor.
 - [Etapa 2, casos de prueba](docs/test-cases-normalization.md): escenarios, propiedades y casos límite de la normalización y el ordenamiento.
 - [Etapa 1, casos de prueba](docs/test-cases-extraction.md): escenarios y resultados esperados.
+- [Etapa 3, revisión de literatura y diseño de los autómatas](docs/classification-design.md): por qué un DFA, el modelo y las categorías requeridas por perfil.
 - [Etapa 4, gramática del DSL](docs/dsl-grammar.md): EBNF, terminales, no terminales y qué rechaza.
 - [Etapa 4, forma normal de Chomsky](docs/dsl-grammar-normal-form.md): la gramática simplificada paso a paso (RAA3).
 - [Etapa 4, casos de prueba](docs/test-cases-dsl.md): escenarios del DSL, el HTML y la forma normal.
