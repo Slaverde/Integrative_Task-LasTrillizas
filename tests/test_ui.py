@@ -121,6 +121,22 @@ def test_build_page_without_stage_3_shows_stages_1_and_2(stage_3_ready):
     assert "<iframe" not in page
 
 
+def test_build_page_with_stage_3_shows_all_four_sections(stage_3_ready):
+    # counterpart of test_build_page_without_stage_3_shows_stages_1_and_2,
+    # now that classify_all is the real stage 3, not a stand-in.
+    if not stage_3_ready:
+        pytest.skip("stage 3 is not implemented yet")
+    page = build_page(WEDNESDAY)  # no classifier argument: uses classify_all
+    assert "1. Extraction" in page
+    assert "2. Normalization" in page
+    assert "3. Recognition" in page
+    assert "4. Candidate profile" in page
+    assert "not implemented" not in page
+    assert "<iframe" in page
+    # Wednesday Addams satisfies Full Stack Developer (the assignment's example)
+    assert '<th>Full Stack Developer</th><td><span class="badge accepted">ACCEPTED</span>' in page
+
+
 def test_build_page_accepts_a_classifier_with_missing_profiles():
     # the DSL writes a missing profile as REJECTED, so the profile is still valid
     assert "<iframe" in build_page(WEDNESDAY, lambda tokens: {})

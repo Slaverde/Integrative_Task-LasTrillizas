@@ -174,3 +174,12 @@ def test_while_stage_3_is_missing_the_error_is_clear(stage_3_ready):
         run_pipeline(WEDNESDAY)
     # stages 1 and 2 still work
     assert analyze(WEDNESDAY).tokens
+
+
+def test_run_pipeline_with_the_real_classifier_on_the_assignment_example(stage_3_ready):
+    # counterpart of test_while_stage_3_is_missing_the_error_is_clear, now
+    # that classify_all is the real stage 3: no classifier argument, no stub.
+    if not stage_3_ready:
+        pytest.skip("stage 3 is not implemented yet")
+    html = run_pipeline(WEDNESDAY)
+    assert "Accepted profiles: Full Stack Developer" in html
