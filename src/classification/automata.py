@@ -105,3 +105,21 @@ the two roles apart. CONCEPT and TOOL are read but optional."""
 def build_backend_developer() -> DeterministicFiniteAutomaton:
     """DFA for ``Profile.BACKEND_DEVELOPER`` (provisional)."""
     return build_automaton(BACKEND_DEVELOPER_REQUIRED)
+
+
+DATA_SCIENTIST_REQUIRED: list[Category] = [
+    Category.LANGUAGE,
+    Category.DATA_LIBRARY,
+    Category.DATABASE,
+    Category.TOOL,
+]
+"""Required categories for DATA_SCIENTIST, provisional team-defined profile
+(see docs/classification-design.md section 3). Emphasizes data analysis
+and tooling (e.g. Jupyter) over production ML frameworks, so the pattern
+does not collapse into MACHINE_LEARNING_ENGINEER. ML_LIBRARY and
+VERSION_CONTROL are read but optional."""
+
+
+def build_data_scientist() -> DeterministicFiniteAutomaton:
+    """DFA for ``Profile.DATA_SCIENTIST`` (provisional)."""
+    return build_automaton(DATA_SCIENTIST_REQUIRED)
