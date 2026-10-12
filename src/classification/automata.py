@@ -73,3 +73,18 @@ section 3). CONCEPT (e.g. REST API) is read but optional."""
 def build_full_stack_developer() -> DeterministicFiniteAutomaton:
     """DFA for ``Profile.FULL_STACK_DEVELOPER``."""
     return build_automaton(FULL_STACK_REQUIRED)
+
+
+MACHINE_LEARNING_ENGINEER_REQUIRED: list[Category] = [
+    Category.LANGUAGE,
+    Category.DATA_LIBRARY,
+    Category.ML_LIBRARY,
+]
+"""Required categories for MACHINE_LEARNING_ENGINEER (see
+docs/classification-design.md section 3). DATABASE, VERSION_CONTROL and
+CONCEPT are read but optional."""
+
+
+def build_machine_learning_engineer() -> DeterministicFiniteAutomaton:
+    """DFA for ``Profile.MACHINE_LEARNING_ENGINEER``."""
+    return build_automaton(MACHINE_LEARNING_ENGINEER_REQUIRED)
